@@ -1,0 +1,225 @@
+<title>Harris Floodplain Shift</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+ .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; } .leaflet-container { overflow: hidden; } .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-user-drag: none; } .leaflet-tile::selection { background: transparent; } .leaflet-safari .leaflet-tile { image-rendering: -webkit-optimize-contrast; } .leaflet-safari .leaflet-tile-container { width: 1600px; height: 1600px; -webkit-transform-origin: 0 0; } .leaflet-marker-icon, .leaflet-marker-shadow { display: block; } .leaflet-container .leaflet-overlay-pane svg { max-width: none !important; max-height: none !important; } .leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width: none !important; max-height: none !important; width: auto; padding: 0; } .leaflet-container img.leaflet-tile { mix-blend-mode: plus-lighter; } .leaflet-container.leaflet-touch-zoom { -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; } .leaflet-container.leaflet-touch-drag { -ms-touch-action: pinch-zoom; touch-action: none; touch-action: pinch-zoom; } .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom { -ms-touch-action: none; touch-action: none; } .leaflet-container { -webkit-tap-highlight-color: transparent; } .leaflet-container a { -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4); } .leaflet-tile { filter: inherit; visibility: hidden; } .leaflet-tile-loaded { visibility: inherit; } .leaflet-zoom-box { width: 0; height: 0; -moz-box-sizing: border-box; box-sizing: border-box; z-index: 800; } .leaflet-overlay-pane svg { -moz-user-select: none; } .leaflet-pane { z-index: 400; } .leaflet-tile-pane { z-index: 200; } .leaflet-overlay-pane { z-index: 400; } .leaflet-shadow-pane { z-index: 500; } .leaflet-marker-pane { z-index: 600; } .leaflet-tooltip-pane { z-index: 650; } .leaflet-popup-pane { z-index: 700; } .leaflet-map-pane canvas { z-index: 100; } .leaflet-map-pane svg { z-index: 200; } .leaflet-vml-shape { width: 1px; height: 1px; } .lvml { behavior: url(#default#VML); display: inline-block; position: absolute; } .leaflet-control { position: relative; z-index: 800; pointer-events: visiblePainted; pointer-events: auto; } .leaflet-top, .leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; } .leaflet-top { top: 0; } .leaflet-right { right: 0; } .leaflet-bottom { bottom: 0; } .leaflet-left { left: 0; } .leaflet-control { float: left; clear: both; } .leaflet-right .leaflet-control { float: right; } .leaflet-top .leaflet-control { margin-top: 10px; } .leaflet-bottom .leaflet-control { margin-bottom: 10px; } .leaflet-left .leaflet-control { margin-left: 10px; } .leaflet-right .leaflet-control { margin-right: 10px; } .leaflet-fade-anim .leaflet-popup { opacity: 0; -webkit-transition: opacity 0.2s linear; -moz-transition: opacity 0.2s linear; transition: opacity 0.2s linear; } .leaflet-fade-anim .leaflet-map-pane .leaflet-popup { opacity: 1; } .leaflet-zoom-animated { -webkit-transform-origin: 0 0; -ms-transform-origin: 0 0; transform-origin: 0 0; } svg.leaflet-zoom-animated { will-change: transform; } .leaflet-zoom-anim .leaflet-zoom-animated { -webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1); -moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1); transition: transform 0.25s cubic-bezier(0,0,0.25,1); } .leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile { -webkit-transition: none; -moz-transition: none; transition: none; } .leaflet-zoom-anim .leaflet-zoom-hide { visibility: hidden; } .leaflet-interactive { cursor: pointer; } .leaflet-grab { cursor: -webkit-grab; cursor: -moz-grab; cursor: grab; } .leaflet-crosshair, .leaflet-crosshair .leaflet-interactive { cursor: crosshair; } .leaflet-popup-pane, .leaflet-control { cursor: auto; } .leaflet-dragging .leaflet-grab, .leaflet-dragging .leaflet-grab .leaflet-interactive, .leaflet-dragging .leaflet-marker-draggable { cursor: move; cursor: -webkit-grabbing; cursor: -moz-grabbing; cursor: grabbing; } .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-image-layer, .leaflet-pane > svg path, .leaflet-tile-container { pointer-events: none; } .leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path { pointer-events: visiblePainted; pointer-events: auto; } .leaflet-container { background: #ddd; outline-offset: 1px; } .leaflet-container a { color: #0078A8; } .leaflet-zoom-box { border: 2px dotted #38f; background: rgba(255,255,255,0.5); } .leaflet-container { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; font-size: 12px; font-size: 0.75rem; line-height: 1.5; } .leaflet-bar { box-shadow: 0 1px 5px rgba(0,0,0,0.65); border-radius: 4px; } .leaflet-bar a { background-color: #fff; border-bottom: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; display: block; text-align: center; text-decoration: none; color: black; } .leaflet-bar a, .leaflet-control-layers-toggle { background-position: 50% 50%; background-repeat: no-repeat; display: block; } .leaflet-bar a:hover, .leaflet-bar a:focus { background-color: #f4f4f4; } .leaflet-bar a:first-child { border-top-left-radius: 4px; border-top-right-radius: 4px; } .leaflet-bar a:last-child { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-bottom: none; } .leaflet-bar a.leaflet-disabled { cursor: default; background-color: #f4f4f4; color: #bbb; } .leaflet-touch .leaflet-bar a { width: 30px; height: 30px; line-height: 30px; } .leaflet-touch .leaflet-bar a:first-child { border-top-left-radius: 2px; border-top-right-radius: 2px; } .leaflet-touch .leaflet-bar a:last-child { border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; } .leaflet-control-zoom-in, .leaflet-control-zoom-out { font: bold 18px 'Lucida Console', Monaco, monospace; text-indent: 1px; } .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out { font-size: 22px; } .leaflet-control-layers { box-shadow: 0 1px 5px rgba(0,0,0,0.4); background: #fff; border-radius: 5px; } .leaflet-control-layers-toggle { background-image: url(images/layers.png); width: 36px; height: 36px; } .leaflet-retina .leaflet-control-layers-toggle { background-image: url(images/layers-2x.png); background-size: 26px 26px; } .leaflet-touch .leaflet-control-layers-toggle { width: 44px; height: 44px; } .leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle { display: none; } .leaflet-control-layers-expanded .leaflet-control-layers-list { display: block; position: relative; } .leaflet-control-layers-expanded { padding: 6px 10px 6px 6px; color: #333; background: #fff; } .leaflet-control-layers-scrollbar { overflow-y: scroll; overflow-x: hidden; padding-right: 5px; } .leaflet-control-layers-selector { margin-top: 2px; position: relative; top: 1px; } .leaflet-control-layers label { display: block; font-size: 13px; font-size: 1.08333em; } .leaflet-control-layers-separator { height: 0; border-top: 1px solid #ddd; margin: 5px -10px 5px -6px; } .leaflet-default-icon-path { background-image: url(images/marker-icon.png); } .leaflet-container .leaflet-control-attribution { background: #fff; background: rgba(255, 255, 255, 0.8); margin: 0; } .leaflet-control-attribution, .leaflet-control-scale-line { padding: 0 5px; color: #333; line-height: 1.4; } .leaflet-control-attribution a { text-decoration: none; } .leaflet-control-attribution a:hover, .leaflet-control-attribution a:focus { text-decoration: underline; } .leaflet-attribution-flag { display: inline !important; vertical-align: baseline !important; width: 1em; height: 0.6669em; } .leaflet-left .leaflet-control-scale { margin-left: 5px; } .leaflet-bottom .leaflet-control-scale { margin-bottom: 5px; } .leaflet-control-scale-line { border: 2px solid #777; border-top: none; line-height: 1.1; padding: 2px 5px 1px; white-space: nowrap; -moz-box-sizing: border-box; box-sizing: border-box; background: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px #fff; } .leaflet-control-scale-line:not(:first-child) { border-top: 2px solid #777; border-bottom: none; margin-top: -2px; } .leaflet-control-scale-line:not(:first-child):not(:last-child) { border-bottom: 2px solid #777; } .leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { box-shadow: none; } .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { border: 2px solid rgba(0,0,0,0.2); background-clip: padding-box; } .leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; } .leaflet-popup-content-wrapper { padding: 1px; text-align: left; border-radius: 12px; } .leaflet-popup-content { margin: 13px 24px 13px 20px; line-height: 1.3; font-size: 13px; font-size: 1.08333em; min-height: 1px; } .leaflet-popup-content p { margin: 17px 0; margin: 1.3em 0; } .leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-top: -1px; margin-left: -20px; overflow: hidden; pointer-events: none; } .leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; pointer-events: auto; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); } .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: white; color: #333; box-shadow: 0 3px 14px rgba(0,0,0,0.4); } .leaflet-container a.leaflet-popup-close-button { position: absolute; top: 0; right: 0; border: none; text-align: center; width: 24px; height: 24px; font: 16px/24px Tahoma, Verdana, sans-serif; color: #757575; text-decoration: none; background: transparent; } .leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus { color: #585858; } .leaflet-popup-scrolled { overflow: auto; } .leaflet-oldie .leaflet-popup-content-wrapper { -ms-zoom: 1; } .leaflet-oldie .leaflet-popup-tip { width: 24px; margin: 0 auto; -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)"; filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678); } .leaflet-oldie .leaflet-control-zoom, .leaflet-oldie .leaflet-control-layers, .leaflet-oldie .leaflet-popup-content-wrapper, .leaflet-oldie .leaflet-popup-tip { border: 1px solid #999; } .leaflet-div-icon { background: #fff; border: 1px solid #666; } .leaflet-tooltip { position: absolute; padding: 6px; background-color: #fff; border: 1px solid #fff; border-radius: 3px; color: #222; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; box-shadow: 0 1px 3px rgba(0,0,0,0.4); } .leaflet-tooltip.leaflet-interactive { cursor: pointer; pointer-events: auto; } .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { position: absolute; pointer-events: none; border: 6px solid transparent; background: transparent; content: ""; } .leaflet-tooltip-bottom { margin-top: 6px; } .leaflet-tooltip-top { margin-top: -6px; } .leaflet-tooltip-bottom:before, .leaflet-tooltip-top:before { left: 50%; margin-left: -6px; } .leaflet-tooltip-top:before { bottom: 0; margin-bottom: -12px; border-top-color: #fff; } .leaflet-tooltip-bottom:before { top: 0; margin-top: -12px; margin-left: -6px; border-bottom-color: #fff; } .leaflet-tooltip-left { margin-left: -6px; } .leaflet-tooltip-right { margin-left: 6px; } .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { top: 50%; margin-top: -6px; } .leaflet-tooltip-left:before { right: 0; margin-right: -12px; border-left-color: #fff; } .leaflet-tooltip-right:before { left: 0; margin-left: -12px; border-right-color: #fff; } @media print { .leaflet-control { -webkit-print-color-adjust: exact; print-color-adjust: exact; } } 
+/* Layout: full-height map with a fixed side panel on desktop; panel becomes a bottom sheet on phones. */
+:root{
+  --bg:#f4f6f7; --panel:#ffffff; --fg:#13202a; --muted:#566673; --line:#d8dfe3; --accent:#1d5b86; --chip:#e8eef2;
+  --c1:#c0392b; --c2:#e67e22; --c3:#e9b90c; --c4:#2e86c1;
+  --font-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e161c; --panel:#131d24; --fg:#e4ebef; --muted:#93a4b0; --line:#26343e; --accent:#74b4e0; --chip:#1c2a33; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e161c; --panel:#131d24; --fg:#e4ebef; --muted:#93a4b0; --line:#26343e; --accent:#74b4e0; --chip:#1c2a33; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:14px;line-height:1.45}
+.app{height:100%;display:grid;grid-template-columns:minmax(300px,370px) 1fr}
+.panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;min-width:0;
+  padding-block:20px 24px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:18px;display:flex;flex-direction:column;gap:18px}
+#map{height:100%;min-width:0;background:#e8e8e8}
+h1{font-size:21px;line-height:1.2;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+.eyebrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.pill{font-family:var(--font-data);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--chip);color:var(--muted)}
+.pill.proj{background:var(--c2);color:#fff}
+.lede{margin:6px 0 0;color:var(--muted);font-size:13px}
+.label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 8px}
+.search{position:relative}
+.search input{width:100%;box-sizing:border-box;font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+.search input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.results{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.results:empty{display:none}
+.results button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;padding:7px 10px;display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);font-size:13px}
+.results li:first-child button{border-top:0}
+.results button:hover,.results button:focus-visible{background:var(--chip)}
+.results small{color:var(--muted);font-family:var(--font-data);font-size:11px;white-space:nowrap}
+.hint{font-size:12px;color:var(--muted);margin:6px 0 0}
+.legend{display:flex;flex-direction:column;gap:2px}
+.row{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.sw{width:14px;height:14px;border-radius:3px}
+.row .t{font-size:13px;min-width:0}
+.row .t small{display:block;color:var(--muted);font-size:12px}
+.num{font-family:var(--font-data);font-variant-numeric:tabular-nums;font-size:12px;text-align:right;white-space:nowrap}
+.num b{display:block;font-size:13px;font-weight:500;color:var(--fg)}
+.row input{margin:0;accent-color:var(--accent)}
+.toggles{display:flex;flex-direction:column;gap:8px;font-size:13px}
+.toggles label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.toggles input[type=range]{flex:1;accent-color:var(--accent)}
+.zips{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.zips button{all:unset;cursor:pointer;display:flex;justify-content:space-between;padding:6px 9px;border:1px solid var(--line);border-radius:5px;font-family:var(--font-data);font-size:12px}
+.zips button:hover,.zips button:focus-visible{border-color:var(--accent);color:var(--accent)}
+.note{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.note p{margin:0}
+.status{position:absolute;z-index:500;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));background:var(--panel);color:var(--fg);border:1px solid var(--line);
+  border-radius:20px;padding:5px 12px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.12);pointer-events:none;white-space:nowrap}
+.mapwrap{position:relative;min-width:0}
+.leaflet-popup-content{font-family:var(--font-body);font-size:13px;margin:12px 14px}
+.pop h3{margin:0 0 2px;font-size:14px}
+.pop .meta{color:#5b6b77;font-size:12px;margin-bottom:8px}
+.pop .chg{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12px}
+.pop .chg span:nth-child(odd){color:#5b6b77}
+.pop .tag{display:inline-block;margin-top:8px;font-family:var(--font-data);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:3px;color:#fff}
+.leaflet-container{font-family:var(--font-body)}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto}
+  .mapwrap{order:1}
+  .panel{order:2;max-height:46vh;border-right:0;border-top:1px solid var(--line);padding-right:max(16px,env(safe-area-inset-right,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="app">
+  <aside class="panel" aria-label="Map controls">
+    <header>
+      <div class="eyebrow"><span class="pill proj">Projected</span><span class="pill">Draft maps &middot; not in effect</span></div>
+      <h1>Harris County floodplain shift</h1>
+      <p class="lede">Land and parcels that fall inside the floodplain on the MAAPnext draft FEMA maps but are outside it, or in a lower zone, on today's effective FEMA map.</p>
+    </header>
+
+    <section class="search">
+      <p class="label"><label for="q">Find a property</label></p>
+      <input id="q" type="search" autocomplete="off" placeholder="Street address or HCAD account" disabled>
+      <ul class="results" id="results"></ul>
+      <p class="hint" id="qhint">Loading 286,623 changed parcels&hellip;</p>
+    </section>
+
+    <section>
+      <p class="label">What changes</p>
+      <div class="legend">
+        <div class="row"><span class="sw" style="background:var(--c1)"></span><span class="t">New 100-year floodplain<small>Outside any flood zone today</small></span><span class="num"><b>59,303 ac</b>53,105 parcels</span></div>
+        <div class="row"><span class="sw" style="background:var(--c2)"></span><span class="t">Moves up to 100-year<small>500-year floodplain today</small></span><span class="num"><b>40,033 ac</b>34,561 parcels</span></div>
+        <div class="row"><span class="sw" style="background:var(--c3)"></span><span class="t">New 500-year floodplain<small>Outside any flood zone today</small></span><span class="num"><b>95,674 ac</b>135,199 parcels</span></div>
+        <div class="row"><span class="sw" style="background:var(--c4);border-radius:50%"></span><span class="t">Leaves the 100-year floodplain<small>Parcels only, shown as points</small></span><span class="num"><b>107,873 ac</b>63,758 parcels</span></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="label">Layers</p>
+      <div class="toggles">
+        <label><input type="checkbox" id="tFlood" checked> Flood-change areas</label>
+        <label for="op" style="padding-left:24px;color:var(--muted)">Opacity <input type="range" id="op" min="20" max="100" value="80"></label>
+        <label><input type="checkbox" id="t1" checked> Parcels: new 100-year</label>
+        <label><input type="checkbox" id="t2" checked> Parcels: 500-year to 100-year</label>
+        <label><input type="checkbox" id="t3" checked> Parcels: new 500-year</label>
+        <label><input type="checkbox" id="t4"> Parcels: leaving the 100-year</label>
+      </div>
+      <p class="hint">Parcels appear at street level (zoom 14+). Click one for details.</p>
+    </section>
+
+    <section>
+      <p class="label">ZIP codes with the most parcels newly in the 100-year floodplain</p>
+      <div class="zips" id="zips"></div>
+    </section>
+
+    <footer class="note">
+      <p><b>Projected, not official.</b> The MAAPnext maps are drafts released for awareness in February 2026. They cannot be used for insurance or regulatory decisions, and FEMA's preliminary maps and appeal period come later.</p>
+      <p>Draft "High" and "Extreme" risk are treated as 100-year; "Moderate" as 500-year. The draft-only "Community Flooding" class (126,703 ac) is left out. Each parcel is placed by its center point.</p>
+      <p>Sources: HCFCD MAAPnext draft flood hazard zones; FEMA National Flood Hazard Layer (05/18/2026); Harris Central Appraisal District parcels. Basemap: Esri, HERE, Garmin, &copy; OpenStreetMap contributors.</p>
+    </footer>
+  </aside>
+  <div class="mapwrap"><div id="map" role="application" aria-label="Map of projected floodplain changes"></div><div class="status" id="status" hidden></div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+(async function(){
+  const COLORS={1:"#c0392b",2:"#e67e22",3:"#e9b90c",4:"#2e86c1"};
+  const LABEL={1:"New 100-year floodplain",2:"Moves from 500-year to 100-year",3:"New 500-year floodplain",4:"Leaves the 100-year floodplain"};
+  const ZONES={1:["Outside floodplain","100-year"],2:["500-year","100-year"],3:["Outside floodplain","500-year"],4:["100-year","500-year or outside"]};
+  const $=id=>document.getElementById(id);
+  const status=$("status");
+  const say=t=>{status.textContent=t;status.hidden=!t};
+
+  const man=await (await fetch("manifest.json")).json();
+  const b=man.bounds;
+  const map=L.map("map",{zoomControl:true,minZoom:9,maxZoom:16,preferCanvas:true,attributionControl:true,
+    maxBounds:L.latLngBounds(b).pad(0.35)}).fitBounds(b);
+  map.attributionControl.setPrefix(false).addAttribution("Esri, HERE, Garmin, \u00a9 OpenStreetMap \u00b7 HCFCD MAAPnext draft \u00b7 FEMA NFHL");
+
+  // basemap + flood overlays
+  map.createPane("base").style.zIndex=200;
+  map.createPane("flood").style.zIndex=300;
+  const floodLayers=[]; let floodOn=true; let floodOp=0.8;
+  const ov=man.z12[0];
+  L.imageOverlay("tiles/"+ov.n+".jpg",ov.b,{pane:"base"}).addTo(map);
+  const ovF=L.imageOverlay("tiles/"+ov.n+"_f.png",ov.b,{pane:"flood",opacity:floodOp}).addTo(map); floodLayers.push(ovF);
+  const loaded=new Set();
+  function loadChunks(){
+    if(map.getZoom()<12) return;
+    const v=map.getBounds().pad(0.25);
+    for(const c of man.z14){
+      if(loaded.has(c.n)) continue;
+      if(!v.intersects(L.latLngBounds(c.b))) continue;
+      loaded.add(c.n);
+      L.imageOverlay("tiles/"+c.n+".jpg",c.b,{pane:"base"}).addTo(map);
+      if(c.f){const f=L.imageOverlay("tiles/"+c.n+"_f.png",c.b,{pane:"flood",opacity:floodOn?floodOp:0}).addTo(map); floodLayers.push(f);}
+    }
+  }
+  const setFlood=()=>floodLayers.forEach(l=>l.setOpacity(floodOn?floodOp:0));
+  $("tFlood").addEventListener("change",e=>{floodOn=e.target.checked;setFlood()});
+  $("op").addEventListener("input",e=>{floodOp=e.target.value/100;setFlood()});
+
+  // ZIP shortcuts
+  const zips=$("zips");
+  man.zips.forEach(z=>{const bt=document.createElement("button");bt.type="button";bt.innerHTML=`<span>${z.zip}</span><span>${z.n.toLocaleString()}</span>`;
+    bt.addEventListener("click",()=>map.flyTo([z.lat,z.lon],14));zips.appendChild(bt)});
+
+  // parcels
+  let P=[]; const grid=new Map(); const CELL=0.01;
+  const key=(la,lo)=>Math.floor(la/CELL)+":"+Math.floor(lo/CELL);
+  const parcelLayer=L.layerGroup().addTo(map);
+  const renderer=L.canvas({padding:0.3});
+  const on={1:true,2:true,3:true,4:false};
+  [1,2,3,4].forEach(k=>$("t"+k).addEventListener("change",e=>{on[k]=e.target.checked;drawParcels()}));
+  function popupHtml(r){
+    const [la,lo,c,addr,zip,id]=r; const z=ZONES[c];
+    return `<div class="pop"><h3>${addr||"No site address"}</h3><div class="meta">TX ${zip||""} \u00b7 HCAD ${id}</div>
+      <div class="chg"><span>Effective map</span><span>${z[0]}</span><span>Draft map</span><span><b>${z[1]}</b></span></div>
+      <span class="tag" style="background:${COLORS[c]}">${LABEL[c]} \u00b7 projected</span></div>`;
+  }
+  function drawParcels(){
+    parcelLayer.clearLayers();
+    if(!P.length) return;
+    if(map.getZoom()<14){say("Zoom in to street level to see parcels");return}
+    const v=map.getBounds(); const s=v.getSouth(),n=v.getNorth(),w=v.getWest(),e=v.getEast();
+    let count=0;
+    for(let a=Math.floor(s/CELL);a<=Math.floor(n/CELL);a++) for(let o=Math.floor(w/CELL);o<=Math.floor(e/CELL);o++){
+      const bucket=grid.get(a+":"+o); if(!bucket) continue;
+      for(const i of bucket){const r=P[i]; if(!on[r[2]]) continue; if(r[0]<s||r[0]>n||r[1]<w||r[1]>e) continue;
+        if(++count>8000) continue;
+        L.circleMarker([r[0],r[1]],{renderer,radius:map.getZoom()>=16?5:3.5,weight:1,color:"#fff",fillColor:COLORS[r[2]],fillOpacity:.95})
+          .bindPopup(()=>popupHtml(r)).addTo(parcelLayer);}
+    }
+    say(count>8000?`Showing 8,000 of ${count.toLocaleString()} parcels here. Zoom in for all.`:"");
+  }
+  map.on("moveend",()=>{loadChunks();drawParcels()});
+  loadChunks();
+
+  try{
+    const parts=await Promise.all([0,1,2].map(i=>fetch("parcels_"+i+".json").then(r=>{if(!r.ok) throw new Error(r.status);return r.json()})));
+    P=parts.flat();
+    P.forEach((r,i)=>{const k=key(r[0],r[1]);(grid.get(k)||grid.set(k,[]).get(k)).push(i)});
+    $("q").disabled=false; $("qhint").textContent="Search 286,623 parcels whose zone changes, by street address or HCAD account number.";
+    drawParcels();
+  }catch(err){$("qhint").textContent="Parcels could not load in this browser. The flood-change areas still show on the map."}
+
+  // search
+  const results=$("results"); let t;
+  $("q").addEventListener("input",e=>{clearTimeout(t);t=setTimeout(()=>search(e.target.value),150)});
+  function search(q){
+    results.innerHTML=""; q=q.trim().toUpperCase(); if(q.length<3) return;
+    const digitsOnly=/^\d{6,}$/.test(q); const out=[];
+    for(const r of P){ if(digitsOnly? r[5].startsWith(q) : r[3].includes(q)){out.push(r); if(out.length>=12) break;} }
+    if(!out.length){results.innerHTML='<li><button type="button" disabled>No changed parcel matches. The property may keep its current zone.</button></li>';return}
+    for(const r of out){const li=document.createElement("li");const bt=document.createElement("button");bt.type="button";
+      bt.innerHTML=`<span>${r[3]||"(no address)"}<br><small>${r[4]||""}</small></span><small style="color:${COLORS[r[2]]}">\u25cf ${["","new 100-yr","500\u2192100","new 500-yr","leaves 100-yr"][r[2]]}</small>`;
+      bt.addEventListener("click",()=>{ if(!on[r[2]]){on[r[2]]=true;$("t"+r[2]).checked=true}
+        map.setView([r[0],r[1]],16); setTimeout(()=>L.popup().setLatLng([r[0],r[1]]).setContent(popupHtml(r)).openOn(map),350)});
+      li.appendChild(bt);results.appendChild(li)}
+  }
+})();
+</script>
