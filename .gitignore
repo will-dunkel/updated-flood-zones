@@ -5,3 +5,4 @@ __pycache__/
 
 # large uncompressed projected outputs (the committed copies are .gz)
 data/projected/**/*.gpkg
+*.gz.properties
