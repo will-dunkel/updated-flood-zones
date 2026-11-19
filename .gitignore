@@ -2,3 +2,6 @@
 output*/
 *.log
 __pycache__/
+
+# large uncompressed projected outputs (the committed copies are .gz)
+data/projected/**/*.gpkg
