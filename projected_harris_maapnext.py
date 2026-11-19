@@ -282,6 +282,8 @@ def main(argv=None):
         lon = np.degrees(p.cx / 6378137.0)
         lat = np.degrees(2 * np.arctan(np.exp(p.cy / 6378137.0)) - np.pi / 2)
         p["lat"], p["lon"] = lat.round(6), lon.round(6)
+        num = pd.to_numeric(p["site_str_num"], errors="coerce")
+        p["site_str_num"] = num.where(num > 0).astype("Int64").astype(str).replace("<NA>", "")
         p["address"] = (p[["site_str_num", "site_str_pfx", "site_str_name", "site_str_sfx", "site_str_sfx_dir"]]
                         .fillna("").astype(str).agg(" ".join, axis=1).str.split().str.join(" "))
         counts = p.change.value_counts()

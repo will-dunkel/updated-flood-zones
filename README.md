@@ -97,3 +97,43 @@ where it stopped. Delete the cache to force fresh data.
   `hazards.fema.gov/arcgis/rest/services/PrelimPending/Prelim_NFHL/MapServer`.
 * **FEMA does not publish parcels.** Parcel results come only from the files
   you pass with `--parcels`.
+
+## Net-new floodplain vs. the prior map: "effective" and "projected"
+
+Two scripts measure land that is *now* in a floodplain and was not before.
+
+| Status | Meaning | Script |
+|---|---|---|
+| `effective` | Changes that took legal effect in the target year (LOMRs), compared with the prior map rebuilt from FEMA Map Service Center archived FIRM databases | `effective_change_diff.py <DFIRM_ID> --label ST_County_FIPS` |
+| `projected` | A county's **draft** maps used as the new version, compared with today's effective map. These maps are not final and have no regulatory effect. | `projected_harris_maapnext.py --nfhl <unzipped NFHL county download>` (Harris County, TX) |
+
+For a county with a draft map, the draft is used as the new version and results are labeled `projected`.
+
+### 2026 five-county run: `data/five_county_summary_2026.csv`
+
+| County | Status | Newly 100-yr (ac) | Newly 500-yr (ac) | Removed from 100-yr (ac) | Parcels newly 100-yr | Parcels newly 500-yr |
+|---|---|---|---|---|---|---|
+| Harris, TX | projected (MAAPnext draft) | 100,410 (40,610 of it was 500-yr) | 97,330 | 107,873 | 87,666 | 135,199 |
+| Hamilton, TN | effective (LOMR 25-04-3371P) | 32.8 | 21.3 | 48.5 | n/a | n/a |
+| Escambia, FL | effective | 0 (no 2026 changes) | 0 | 0 | 0 | 0 |
+| Fulton, GA | effective | 0 (no 2026 changes) | 0 | 0 | 0 | 0 |
+| Pender, NC | effective | 0 (no 2026 changes) | 0 | 0 | 0 | 0 |
+
+Notes:
+* Harris draft classes: High Risk and Extreme Risk are treated as 100-yr;
+  Moderate Risk as 500-yr. The MAAPnext-only "Community Flooding" class
+  (126,703 acres) is excluded because it is not a FEMA flood zone.
+* Harris parcels (Harris Central Appraisal District, 1.47M parcels) are
+  classified at their centroid. Published estimates that count parcels
+  *partially* in the floodplain will be higher.
+* Hamilton's comparison uses FEMA's 11/28/2025 FIRM database. That covers
+  100% of the revision area, so the baseline is the map as of late 2025.
+* "Chattanooga County, TN" was interpreted as Hamilton County, TN (Chattanooga
+  is its county seat).
+
+Outputs:
+* `data/projected/TX_Harris_48201/` contains `summary.csv`,
+  `parcels_projected_changes.csv.gz` (addresses, current vs draft zone),
+  `newly_added_zones.gpkg.gz` and `map.png`.
+* `data/effective_diff/TN_Hamilton_47065/` contains
+  `effective_changes_2026.csv` and `.gpkg`.
