@@ -1,0 +1,4 @@
+# scraper working output (regenerable): API cache, combined GeoPackage, logs
+output*/
+*.log
+__pycache__/
