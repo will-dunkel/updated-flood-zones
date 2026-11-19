@@ -156,10 +156,13 @@ class Client:
 # --------------------------------------------------------------------------- #
 def flood_class(attrs: dict) -> str | None:
     """Return '100yr', '500yr' or None (outside both)."""
-    if (attrs.get("SFHA_TF") or "").upper() == "T":
+    def txt(v):  # tolerate None / NaN from shapefiles
+        return v.upper() if isinstance(v, str) else ""
+
+    if txt(attrs.get("SFHA_TF")) == "T":
         return "100yr"
-    zone = (attrs.get("FLD_ZONE") or "").upper()
-    sub = (attrs.get("ZONE_SUBTY") or "").upper()
+    zone = txt(attrs.get("FLD_ZONE"))
+    sub = txt(attrs.get("ZONE_SUBTY"))
     if zone == "X" and ("0.2 PCT" in sub or "LEVEE" in sub or "1 PCT DEPTH LESS" in sub
                         or "1 PCT DRAINAGE AREA" in sub or "1 PCT CONTRIBUTING" in sub):
         return "500yr"
