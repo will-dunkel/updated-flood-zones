@@ -20,7 +20,8 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size
 .app{height:100%;display:grid;grid-template-columns:minmax(300px,370px) 1fr}
 .panel{background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;min-width:0;
   padding-block:20px 24px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:18px;display:flex;flex-direction:column;gap:18px}
-#map{height:100%;min-width:0;background:#e8e8e8}
+#map{position:absolute;inset:0;background:#e8e8e8}
+.mapwrap{min-height:420px}
 h1{font-size:21px;line-height:1.2;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
 .eyebrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
 .pill{font-family:var(--font-data);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--chip);color:var(--muted)}
@@ -134,10 +135,22 @@ h1{font-size:21px;line-height:1.2;margin:0;font-weight:700;letter-spacing:-.01em
   const status=$("status");
   const say=t=>{status.textContent=t;status.hidden=!t};
 
-  const man=await (await fetch("manifest.json")).json();
+  const fail=msg=>{say(msg);const h=$("qhint");if(h) h.textContent=msg};
+  window.addEventListener("error",e=>fail("Map error: "+(e.message||"a resource failed to load")));
+  window.addEventListener("unhandledrejection",e=>fail("Map error: "+((e.reason&&e.reason.message)||e.reason)));
+  if(!window.L){fail("The map library did not load. Reload the page to try again.");return}
+  say("Loading map\u2026");
+  let man;
+  try{const r=await fetch("manifest.json");if(!r.ok) throw new Error("manifest "+r.status);man=await r.json()}
+  catch(err){fail("Could not load the map data ("+err.message+"). Reload the page to try again.");return}
   const b=man.bounds;
+  // wait until the viewer has given the map a real size; Leaflet measures it once at start
+  const el=$("map");
+  await new Promise(res=>{const ok=()=>el.clientWidth>0&&el.clientHeight>0;if(ok()) return res();
+    const ro=new ResizeObserver(()=>{if(ok()){ro.disconnect();res()}});ro.observe(el)});
   const map=L.map("map",{zoomControl:true,minZoom:9,maxZoom:16,preferCanvas:true,attributionControl:true,
     maxBounds:L.latLngBounds(b).pad(0.35)}).fitBounds(b);
+  say("");
   map.attributionControl.setPrefix(false).addAttribution("Esri, HERE, Garmin, \u00a9 OpenStreetMap \u00b7 HCFCD MAAPnext draft \u00b7 FEMA NFHL");
 
   // basemap + flood overlays
@@ -145,8 +158,9 @@ h1{font-size:21px;line-height:1.2;margin:0;font-weight:700;letter-spacing:-.01em
   map.createPane("flood").style.zIndex=300;
   const floodLayers=[]; let floodOn=true; let floodOp=0.8;
   const ov=man.z12[0];
-  L.imageOverlay("tiles/"+ov.n+".jpg",ov.b,{pane:"base"}).addTo(map);
-  const ovF=L.imageOverlay("tiles/"+ov.n+"_f.png",ov.b,{pane:"flood",opacity:floodOp}).addTo(map); floodLayers.push(ovF);
+  let bad=0; const watch=l=>l.on("error",()=>{bad++;say(bad+" map image"+(bad>1?"s":"")+" failed to load. Reload to retry.")});
+  watch(L.imageOverlay("tiles/"+ov.n+".jpg",ov.b,{pane:"base"}).addTo(map));
+  const ovF=watch(L.imageOverlay("tiles/"+ov.n+"_f.png",ov.b,{pane:"flood",opacity:floodOp}).addTo(map)); floodLayers.push(ovF);
   const loaded=new Set();
   function loadChunks(){
     if(map.getZoom()<12) return;
@@ -155,8 +169,8 @@ h1{font-size:21px;line-height:1.2;margin:0;font-weight:700;letter-spacing:-.01em
       if(loaded.has(c.n)) continue;
       if(!v.intersects(L.latLngBounds(c.b))) continue;
       loaded.add(c.n);
-      L.imageOverlay("tiles/"+c.n+".jpg",c.b,{pane:"base"}).addTo(map);
-      if(c.f){const f=L.imageOverlay("tiles/"+c.n+"_f.png",c.b,{pane:"flood",opacity:floodOn?floodOp:0}).addTo(map); floodLayers.push(f);}
+      watch(L.imageOverlay("tiles/"+c.n+".jpg",c.b,{pane:"base"}).addTo(map));
+      if(c.f){const f=watch(L.imageOverlay("tiles/"+c.n+"_f.png",c.b,{pane:"flood",opacity:floodOn?floodOp:0}).addTo(map)); floodLayers.push(f);}
     }
   }
   const setFlood=()=>floodLayers.forEach(l=>l.setOpacity(floodOn?floodOp:0));
@@ -197,6 +211,11 @@ h1{font-size:21px;line-height:1.2;margin:0;font-weight:700;letter-spacing:-.01em
     say(count>8000?`Showing 8,000 of ${count.toLocaleString()} parcels here. Zoom in for all.`:"");
   }
   map.on("moveend",()=>{loadChunks();drawParcels()});
+  // keep Leaflet in step with the frame size (the viewer may resize it after load)
+  let lastW=el.clientWidth,lastH=el.clientHeight;
+  new ResizeObserver(()=>{if(!el.clientWidth||!el.clientHeight) return;
+    const tiny=lastW<50||lastH<50; lastW=el.clientWidth; lastH=el.clientHeight;
+    map.invalidateSize({pan:false}); if(tiny) map.fitBounds(b); loadChunks(); drawParcels()}).observe(el);
   loadChunks();
 
   try{
