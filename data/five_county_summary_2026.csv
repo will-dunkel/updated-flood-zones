@@ -2,5 +2,5 @@ county,fips,status,new_map,old_map,newly_100yr_acres,newly_100yr_was_500yr_acres
 "Harris County, TX",48201,projected,MAAPnext draft maps (Feb 2026),"Current effective FEMA map (NFHL, 05/18/2026)",100410.0,40610.0,97330.0,107873.0,100.0,87666.0,135199.0,"Draft 'Community Flooding' class (126,703 ac; 95,745 parcels outside current floodplain) is not a FEMA SFHA and is excluded. Parcels classified at centroid."
 "Hamilton County, TN",47065,effective,LOMR 25-04-3371P (eff. 2026-08-31),"FEMA MSC FIRM database 47065C, 11/28/2025",32.8,,21.3,48.5,100.0,,,No draft map. Parcels not computed (no parcel source loaded).
 "Escambia County, FL",12033,effective,none,,0.0,0.0,0.0,0.0,,0.0,0.0,No draft map; no FEMA map changes effective in 2026.
-"Fulton County, GA",13121,effective,none,,0.0,0.0,0.0,0.0,,0.0,0.0,No draft map; no FEMA map changes effective in 2026.
+"Fulton County, GA",13121,effective,none,,0.0,0.0,0.0,0.0,,0.0,0.0,"No draft map; no FEMA map changes effective in 2026. Pending LOMR 26-04-1523P (Hapeville, effective 2027-03-11): +0.55 ac newly 100-yr, -2.28 ac removed from 100-yr; see data/pending/GA_Fulton_13121/."
 "Pender County, NC",37141,effective,none,,0.0,0.0,0.0,0.0,,0.0,0.0,No current draft (2018/2021 drafts became effective 2025-01-17); no FEMA map changes effective in 2026.
